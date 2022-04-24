@@ -1,0 +1,7 @@
+-- Your SQL goes here
+CREATE TABLE IF NOT EXISTS words(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  word VARCHAR(255) NOT NULL,
+  word_length INTEGER NOT NULL,
+  UNIQUE(word)
+);
