@@ -54,17 +54,15 @@ fn contains_at(words: &Vec<String>, char_pos: &HashMap<char, (usize, i32)>) -> V
                     to_be_inserted = false;
                 }
             }else if pos.1 == 0 {
-                if !current_word.contains(*ch) && current_word.chars().nth(pos.0).unwrap() != *ch {
+                if !(current_word.chars().nth(pos.0).unwrap() != *ch && current_word.contains(*ch)){
                     to_be_inserted = false;
                 }
-            }else {
-                if pos.0 == 1 {
-                    if current_word.chars().nth(pos.0).unwrap() !=  *ch {
-                       to_be_inserted = false;
-                   }
-                }else if current_word.chars().nth(pos.0).unwrap() != *ch {
+            }else if pos.1 == 1{
+                if current_word.chars().nth(pos.0).unwrap() != *ch {
                     to_be_inserted = false;
                 }
+            }else{
+                panic!("Not allowed");
             }
         }
 
