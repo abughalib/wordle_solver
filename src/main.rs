@@ -1,7 +1,4 @@
 use actix_web::{web, App, HttpServer};
-use diesel::prelude::*;
-use diesel::{Connection, QueryDsl, RunQueryDsl, SqliteConnection};
-use std::collections::HashMap;
 
 pub mod api;
 pub mod database;
