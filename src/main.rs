@@ -1,114 +1,114 @@
-use diesel::{SqliteConnection, Connection, RunQueryDsl, QueryDsl};
-use std::collections::HashMap;
+use actix_web::{web, App, HttpServer};
 use diesel::prelude::*;
+use diesel::{Connection, QueryDsl, RunQueryDsl, SqliteConnection};
+use std::collections::HashMap;
 
+pub mod api;
+pub mod database;
 pub mod models;
-pub mod schema;
 pub mod scanner;
+pub mod schema;
 
 #[macro_use]
 extern crate diesel;
 
-fn get_words(length: i32) -> Vec<String>{
+// fn print_vec(words: &Vec<String>) {
+//     for word in words.iter() {
+//         println!("{}", word);
+//     }
+// }
 
-    use schema::words::dsl::*;
-    let conn = SqliteConnection::establish("words.db")
-    .expect("Failed create connections");
+// trait Contains {
+//     fn contains(&self, chr: char) -> bool;
+// }
 
-    words.filter(word_length.eq(length)).select(word).load::<String>(&conn).unwrap()
-}
+// impl Contains for String {
+//     fn contains(&self, rhs: char) -> bool {
+//         for lhs in self.chars() {
+//             if lhs == rhs {
+//                 return true;
+//             }
+//         }
+//         return false;
+//     }
+// }
 
-fn print_vec(words: &Vec<String>){
-    for word in words.iter(){
-        println!("{}", word);
-    }
-}
+// fn contains_at(words: &Vec<String>, char_pos: &HashMap<char, (usize, i32)>) -> Vec<String> {
+//     let mut filtered_words: Vec<String> = Vec::with_capacity(words.len());
 
-trait Contains {
-    fn contains(&self, chr: char) -> bool;
-}
+//     for i in 0..words.len() {
+//         let mut to_be_inserted: bool = true;
+//         let current_word = words[i].clone();
+//         for ch in char_pos.keys() {
+//             let pos = char_pos.get(ch).unwrap();
+//             if pos.1 == -1 {
+//                 if current_word.contains(*ch) {
+//                     to_be_inserted = false;
+//                 }
+//             } else if pos.1 == 0 {
+//                 if !(current_word.chars().nth(pos.0).unwrap() != *ch && current_word.contains(*ch))
+//                 {
+//                     to_be_inserted = false;
+//                 }
+//             } else if pos.1 == 1 {
+//                 if current_word.chars().nth(pos.0).unwrap() != *ch {
+//                     to_be_inserted = false;
+//                 }
+//             } else {
+//                 panic!("Not allowed");
+//             }
+//         }
 
-impl Contains for String {
-    fn contains(&self, rhs: char) -> bool {
-        for lhs in self.chars() {
-            if lhs == rhs {
-                return true;
-            }
-        }
-        return false;
-    }
-}
+//         if to_be_inserted {
+//             println!("{}", current_word);
+//             filtered_words.push(current_word);
+//         }
+//     }
+//     filtered_words
+// }
 
-fn contains_at(words: &Vec<String>, char_pos: &HashMap<char, (usize, i32)>) -> Vec<String> {
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    // let stdin = std::io::stdin();
+    // let mut s = scanner::Scanner::new(stdin.lock());
 
-    let mut filtered_words: Vec<String> = Vec::with_capacity(words.len());
+    // println!("Wordle Word Length: ");
+    // let n: i32 = s.cin();
+    // println!("Number of tries: ");
+    // let mut m: i32 = s.cin();
 
-    for i in 0..words.len(){
+    // let mut words: Vec<String> = get_words(n);
 
-        let mut to_be_inserted: bool = true;
-        let current_word = words[i].clone();
-        for ch in char_pos.keys(){
-            let pos = char_pos.get(ch).unwrap();
-            if pos.1 == -1{
-                if current_word.contains(*ch) {
-                    to_be_inserted = false;
-                }
-            }else if pos.1 == 0 {
-                if !(current_word.chars().nth(pos.0).unwrap() != *ch && current_word.contains(*ch)){
-                    to_be_inserted = false;
-                }
-            }else if pos.1 == 1{
-                if current_word.chars().nth(pos.0).unwrap() != *ch {
-                    to_be_inserted = false;
-                }
-            }else{
-                panic!("Not allowed");
-            }
-        }
+    // println!("Try any of these words as first word: ");
+    // print_vec(&words);
 
-        if to_be_inserted {
-            println!("{}", current_word);
-            filtered_words.push(current_word);
-        }
-    }
-    filtered_words
-}
+    // while m > 0{
 
-fn main() {
+    //     println!("How many characters to be filtered");
+    //     let mut x: i32 = s.cin();
+    //     let mut char_pos: HashMap<char, (usize, i32)> = HashMap::new();
 
-    let stdin = std::io::stdin();
-    let mut s = scanner::Scanner::new(stdin.lock());
+    //     while x > 0{
 
-    println!("Wordle Word Length: ");
-    let n: i32 = s.cin();
-    println!("Number of tries: ");
-    let mut m: i32 = s.cin();
+    //         println!("Character & Position, and if correct pos then 1 else 0");
+    //         let (chr, pos, resp) = (s.cin::<char>(), s.cin::<usize>()-1, s.cin::<i32>());
 
-    let mut words: Vec<String> = get_words(n);
+    //         char_pos.insert(chr, (pos, resp));
 
-    println!("Try any of these words as first word: ");
-    print_vec(&words);
+    //         x-=1;
+    //     }
 
-    while m > 0{
+    //     words = contains_at(&words, &char_pos);
+    //     print_vec(&words);
 
-        println!("How many characters to be filtered");
-        let mut x: i32 = s.cin();
-        let mut char_pos: HashMap<char, (usize, i32)> = HashMap::new();
+    //     m -=1;
+    // }
 
-        while x > 0{
-
-            println!("Character & Position, and if correct pos then 1 else 0");
-            let (chr, pos, resp) = (s.cin::<char>(), s.cin::<usize>()-1, s.cin::<i32>());
-
-            char_pos.insert(chr, (pos, resp));
-
-            x-=1;
-        }
-
-        words = contains_at(&words, &char_pos);
-        print_vec(&words);
-
-        m -=1;
-    }
-    
+    HttpServer::new(|| 
+        App::new().service(api::index)
+        .route("word", web::post().to(api::word))
+    )
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
 }
