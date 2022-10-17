@@ -6,5 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-diesel = {version = "1.4", features = ['sqlite']}
-libsqlite3-sys = { version = "0.24.2", optional = true, features = ["bundled"] }
+diesel = { version = "2.0", features = ['sqlite'] }
+libsqlite3-sys = { version = "0.25", optional = true, features = ["bundled"] }
+actix-web = { version = "4.2" }
+serde_derive = "1.0.145"
+serde= "1.0.145"
