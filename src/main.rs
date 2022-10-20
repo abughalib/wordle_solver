@@ -25,6 +25,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .service(api::index)
             .route("words", web::post().to(api::word))
+            .route("random_word", web::post().to(api::random_word))
     })
     .bind(("127.0.0.1", 8080))?
     .run()
