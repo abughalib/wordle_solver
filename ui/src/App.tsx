@@ -1,44 +1,27 @@
 import "./App.css";
-import React, { useState } from "react";
+import Navbar from "./header/navbar";
+import { useRef } from "react";
+import Home from "./home";
 
-async function fetchWords(): Promise<[]> {
-  let resp = await fetch("http://localhost:8080/words", {
-    method: "POST",
-    body: JSON.stringify({
-      length: 19,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (resp.status === 200) {
-    let json_resp = await resp.json();
-    return json_resp;
-  } else {
-    return await Promise.reject(resp);
-  }
-}
+const App: React.FC = () => {
 
-function App() {
-  const [words, setWords] = useState<[]>([]);
-
-  React.useEffect(() => {
-    fetchWords().then((words) => {
-      if (words) {
-        setWords(words);
-      }
-    });
-  });
+  const options = () => {
+    let options = [];
+    for (let i = 5; i < 21; i++) {
+      options.push(<option value={i}>{i}</option>);
+    }
+    return options;
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-        {words.map((word) => {
-          return <p key={word}>{word}</p>;
-        })}
-      </header>
+      <Navbar />
+      <div className="md-top-10 center">
+        <h2>Select Word Length: </h2>
+        <select>{options()}</select>
+      </div>
     </div>
   );
-}
+};
 
 export default App;

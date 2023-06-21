@@ -3,3 +3,26 @@
   color: white;
   font-size: 20px;
 }
+
+.md-3 {
+  margin: 3px;
+}
+
+.md-top-10 {
+  margin-top: 10%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+select {
+  width: 80px;
+  height: 40px;
+  border-radius: 5px;
+  text-align: center;
+  border: 1px solid #afb0b1;
+  font-size: 30px;
+}
